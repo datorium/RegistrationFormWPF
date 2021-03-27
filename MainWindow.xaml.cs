@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace RegistrationFormWPF
 {
@@ -60,6 +61,16 @@ namespace RegistrationFormWPF
             item.Content = $"{user.Email}:{user.Password}";
             UserList.Items.Add(item);
         }
+
+        private void ExportList_Click(object sender, RoutedEventArgs e)
+        {
+            List<String> list = new List<string>();
+            foreach (var item in UserList.Items)
+            {
+                list.Add(item.ToString());
+            }
+            FileReadWrite.WriteIntoFile(list.ToArray());
+        }
     }
 
     public class User
@@ -73,5 +84,13 @@ namespace RegistrationFormWPF
             this.Password = password;
         }
     }
+
+    public class FileReadWrite
+    {
+        public static async Task WriteIntoFile(string[] lines)
+        {
+            await File.WriteAllLinesAsync("Log.txt", lines);
+        }
+    }    
 
 }
